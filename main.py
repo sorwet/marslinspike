@@ -1,9 +1,11 @@
 import asyncio, quinnat, configparser
+from pysignald_async.api import JsonAddressv1, JsonMessageEnvelopev1
 
 config = configparser.ConfigParser()
 config.read('default.ini')
 
-signalUsername = config['signalUsername']
+signalUsername = config['Signal']['signalUsername']
+signaldSocketPath = config['Signal']['signaldSocketPath']
 urbitUrl = config['urbitUrl']
 urbitId = config['urbitId']
 urbitCode = config['urbitCode']
@@ -12,23 +14,31 @@ urbitBridgeChat = config['urbitBridgeChat']
 urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
 signalClient = SignaldClient()
 
-async def qr_callback(uri: str) -> None:
-    import os
-    os.system(f"qrencode -t ansiutf8 '{uri}'")
 
-async def handle_message(message: Message) -> None:
+class RelayBot(SignaldAPI):
 
-    urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": "Got message: {message}"})
+    def handle_envelope(self, payload):
+
+        message = envelope.dataMessage
+        source = envelope.source.number
+
+        if message is not None and source is not None:
+            username = envelope.username
+            asyncio.create_task(
+                    urbitClient.post_message(
+                        urbitHost, 
+                        urbitBridgeChat, 
+                        {
+                            "text": "Got message from {source}: {message.body}"
+                        }
+                    )
+            )
 
 async def main():
+    urbitClient.connect()
 
-    signalClient.add_event_handler(Message, handle_message)
-    await signalClient.connect()
-    await urbitClient.connect()
+    loop = asyncio.get_running_loop()
+    _, signald = await loop.create_unix_connection(SignaldAPI, path=signaldSocketPath)
+    await signald.subscribe(username=signalUsername)
 
-    await signalClient.link(qr_callback)
-    await signalClient.subscribe(signal_username)
-
-    loop = asynchio.get_event_loop()
-    loop.run_until_complete(main())
-    loop.run_forever()
+asyncio.run(main())
