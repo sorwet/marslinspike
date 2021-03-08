@@ -9,6 +9,7 @@ signalUsername = config['signalUsername']
 urbitUrl = config['urbitUrl']
 urbitId = config['urbitId']
 urbitCode = config['urbitCode']
+urbitBridgeChat = config['urbitBridgeChat']
 
 urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
 signalClient = SignaldClient()
