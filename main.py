@@ -1,11 +1,14 @@
-import asyncio, quinnat
+import asyncio, quinnat, configparser
 from mausignald import SignaldClient
 from mausignald.types import Message
 
-signalUsername = ""
-urbitUrl = ""
-urbitId = ""
-urbitCode = ""
+config = configparser.ConfigParser()
+config.read('default.ini')
+
+signalUsername = config['signalUsername']
+urbitUrl = config['urbitUrl']
+urbitId = config['urbitId']
+urbitCode = config['urbitCode']
 
 urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
 signalClient = SignaldClient()
