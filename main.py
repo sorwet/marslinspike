@@ -1,6 +1,4 @@
 import asyncio, quinnat, configparser
-from mausignald import SignaldClient
-from mausignald.types import Message
 
 config = configparser.ConfigParser()
 config.read('default.ini')
@@ -29,7 +27,7 @@ async def main():
     await urbitClient.connect()
 
     await signalClient.link(qr_callback)
-        await signalClient.subscribe(signal_username)
+    await signalClient.subscribe(signal_username)
 
     loop = asynchio.get_event_loop()
     loop.run_until_complete(main())

@@ -1,0 +1,3 @@
+[submodule "quinnat"]
+	path = quinnat
+	url = https://github.com/midsum-salrux/quinnat
