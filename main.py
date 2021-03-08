@@ -1,4 +1,4 @@
-import asyncio, quinnat, configparser
+import asyncio, configparser, quinnat
 from pysignald_async.api import JsonAddressv1, JsonMessageEnvelopev1
 
 config = configparser.ConfigParser()
@@ -11,8 +11,7 @@ urbitId = config['Urbit']['urbitId']
 urbitCode = config['Urbit']['urbitCode']
 urbitBridgeChat = config['Urbit']['urbitBridgeChat']
 
-urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
-signalClient = SignaldClient()
+urbitClient = Quinnat(urbitUrl, urbitId, urbitCode)
 
 
 class RelayBot(SignaldAPI):
