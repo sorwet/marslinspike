@@ -6,10 +6,10 @@ config.read('default.ini')
 
 signalUsername = config['Signal']['signalUsername']
 signaldSocketPath = config['Signal']['signaldSocketPath']
-urbitUrl = config['urbitUrl']
-urbitId = config['urbitId']
-urbitCode = config['urbitCode']
-urbitBridgeChat = config['urbitBridgeChat']
+urbitUrl = config['Urbit']['urbitUrl']
+urbitId = config['Urbit']['urbitId']
+urbitCode = config['Urbit']['urbitCode']
+urbitBridgeChat = config['Urbit']['urbitBridgeChat']
 
 urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
 signalClient = SignaldClient()
