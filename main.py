@@ -1,4 +1,4 @@
-import asyncio, configparser, quinnat
+import configparser, quinnat
 
 config = configparser.ConfigParser()
 config.read('default.ini')
@@ -12,9 +12,8 @@ urbitBridgeChat = config['URBIT']['urbitBridgeChat']
 urbitHost = config['URBIT']['urbitHost']
 
 urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
-print("Quinnat initialised. Connecting to ship {} @ {} ...".format(urbitId, urbitUrl))
-
+print(f"connecting to ship {urbitId} @ {urbitUrl}")
 urbitClient.connect()
-print("Connected to ship {}.".format(urbitId))
-print("Posting message in {}...".format(urbitBridgeChat))
-urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": "Sending test message."})
+print(f"connected to ship {urbitId}.")
+
+urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": ctx.message.get_body()})

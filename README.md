@@ -23,17 +23,25 @@ Note that this software is currently under development, and I am not responsible
 
 * [Quinnat](https://github.com/midsum-salrux/quinnat)
 * an already-registered Signal number
-* a running instance of [signald](https://gitlab.com/signald/signald)
+* a running instance of [signald](https://gitlab.com/signald/signald) (note: this project uses the Debian package)
 * an Urbit identity
 
 ## Setup
 
-Install Quinnat and pysignald-async via `pip`.
+Install signald for Debian via the instructions [here](https://gitlab.com/signald/signald/-/blob/main/docs/install/debian.md).
 
-Set up a group for your bridge to reside in.
+Link signald with your Signal number via:
+
+`signaldctl account link`
+
+Install Quinnat via `pip`:
+
+`pip3 install quinnat`
+
+Set up a group on your Urbit for your bridge to reside in.
 
 Copy `example.ini` to `default.ini`, and modify it as appropriate to meet your needs.
 
 Start the bridge:
 
-python3 main.py
+`python3 main.py`
