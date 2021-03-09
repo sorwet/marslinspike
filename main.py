@@ -16,4 +16,4 @@ print(f"connecting to ship {urbitId} @ {urbitUrl}")
 urbitClient.connect()
 print(f"connected to ship {urbitId}.")
 
-urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": ctx.message.get_body()})
+urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": "Sending test message."})
