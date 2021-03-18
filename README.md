@@ -8,9 +8,7 @@ Note that this software is currently under development, and I am not responsible
 
 ## Milestones
 
-[you are here]
-
-* relay text messages from a Signal DM to an Urbit chat
+* ~~relay text messages from a Signal DM to an Urbit chat~~ **COMPLETE** [you are here]
 * relay text messages from an Urbit chat to a Signal DM
 * relay text messages from a Signal group to an Urbit chat
 * relay text messages from an Urbit chat to a Signal group
@@ -22,6 +20,7 @@ Note that this software is currently under development, and I am not responsible
 ## Requirements
 
 * [Quinnat](https://github.com/midsum-salrux/quinnat)
+* [Semaphore](https://github.com/lwesterhof/semaphore)
 * an already-registered Signal number
 * a running instance of [signald](https://gitlab.com/signald/signald) (note: this project uses the Debian package)
 * an Urbit identity
@@ -37,6 +36,10 @@ Link signald with your Signal number via:
 Install Quinnat via `pip`:
 
 `pip3 install quinnat`
+
+Install Semaphore via `pip`:
+
+`pip3 install semaphore-bot`
 
 Set up a group on your Urbit for your bridge to reside in.
 
