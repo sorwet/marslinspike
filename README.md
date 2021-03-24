@@ -8,9 +8,9 @@ Note that this software is currently under development, and I am not responsible
 
 ## Milestones
 
-* ~~relay text messages from a Signal DM to an Urbit chat~~ **COMPLETE** [you are here]
+* ~~relay text messages from a Signal DM to an Urbit chat~~ **COMPLETE**
 * relay text messages from an Urbit chat to a Signal DM
-* relay text messages from a Signal group to an Urbit chat
+* ~~relay text messages from a Signal group to an Urbit chat~~ **COMPLETE**
 * relay text messages from an Urbit chat to a Signal group
 * relay image messages from an Urbit chat to Signal
 * relay image messages from Signal to Urbit
