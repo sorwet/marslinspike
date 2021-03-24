@@ -21,6 +21,7 @@ Note that this software is currently under development, and I am not responsible
 
 * [Quinnat](https://github.com/midsum-salrux/quinnat)
 * [Semaphore](https://github.com/lwesterhof/semaphore)
+* Boto3
 * an already-registered Signal number
 * a running instance of [signald](https://gitlab.com/signald/signald) (note: this project uses the Debian package)
 * an Urbit identity
@@ -40,6 +41,10 @@ Install Quinnat via `pip`:
 Install Semaphore via `pip`:
 
 `pip3 install semaphore-bot`
+
+Install boto3 via `pip`:
+
+`pip3 install boto3`
 
 Set up a group on your Urbit for your bridge to reside in.
 
