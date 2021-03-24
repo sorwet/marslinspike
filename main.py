@@ -25,18 +25,39 @@ s3Client = boto3.resource(
 signalClient = Bot(signalUsername)
 urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
 
+def parseContentType(contentType):
+    return contentType.split('/')[1]
+
 @signalClient.handler('')
 async def simpleRelay(ctx: ChatContext) -> None:
+
+    s3BucketUrl = s3Url + '/' + s3Bucket
+
     if ctx.message.data_message.group and not ctx.message.data_message.attachments:
         urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username} in group {ctx.message.data_message.group.name}: {ctx.message.get_body()}"})
+
     if ctx.message.data_message.group and ctx.message.data_message.attachments:
-        s3Client.Bucket(s3Bucket).upload_file(Filename=ctx.message.data_message.attachments[0].stored_filename, Key=ctx.message.data_message.attachments[0].id)
-        urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"*{ctx.message.username} in group {ctx.message.data_message.group.name} sent an attachment.*"})
+        s3Key = ctx.message.data_message.attachments[0].id + '.' + parseContentType(ctx.message.data_message.attachments[0].content_type)
+        s3Client.Bucket(s3Bucket).upload_file(
+                Filename = ctx.message.data_message.attachments[0].stored_filename, 
+                Key = s3Key
+            )
+        s3AttachmentUrl = s3BucketUrl + '/' + s3Key
+        urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username} in group {ctx.message.data_message.group.name}:"})
+        urbitClient.post_message(urbitHost, urbitBridgeChat, {"url": f"{s3AttachmentUrl}"})
+
     if not ctx.message.data_message.group and not ctx.message.data_message.attachments:
         urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username}: {ctx.message.get_body()}"})
+
     if not ctx.message.data_message.group and ctx.message.data_message.attachments:
-        s3Client.Bucket(s3Bucket).upload_file(Filename=ctx.message.data_message.attachments[0].stored_filename, Key=ctx.message.data_message.attachments[0].id)
-        urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"*{ctx.message.username} sent an attachment.*"})
+        s3Key = ctx.message.data_message.attachments[0].id + '.' + parseContentType(ctx.message.data_message.attachments[0].content_type)
+        s3Client.Bucket(s3Bucket).upload_file(
+                Filename = ctx.message.data_message.attachments[0].stored_filename, 
+                Key = s3Key
+            )
+        s3AttachmentUrl = s3BucketUrl + '/' + s3Key
+        urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username}:"})
+        urbitClient.post_message(urbitHost, urbitBridgeChat, {"url": f"{s3AttachmentUrl}"})
 
 async def main():
     urbitClient.connect()
