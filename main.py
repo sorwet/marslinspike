@@ -17,11 +17,14 @@ urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
 
 @signalClient.handler('')
 async def simpleRelay(ctx: ChatContext) -> None:
-    print(ctx.message.data_message)
-    if ctx.message.data_message.group:
+    if ctx.message.data_message.group and not ctx.message.data_message.attachments:
         urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username} in group {ctx.message.data_message.group.name}: {ctx.message.get_body()}"})
-    else:
+    if ctx.message.data_message.group and ctx.message.data_message.attachments:
+        urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"*{ctx.message.username} in group {ctx.message.data_message.group.name} sent an attachment.*"})
+    if not ctx.message.data_message.group and not ctx.message.data_message.attachments:
         urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username}: {ctx.message.get_body()}"})
+    if not ctx.message.data_message.group and ctx.message.data_message.attachments:
+        urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"*{ctx.message.username} sent an attachment.*"})
 
 async def main():
     urbitClient.connect()
