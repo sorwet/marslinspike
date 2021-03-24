@@ -37,6 +37,8 @@ async def simpleRelay(ctx: ChatContext) -> None:
         urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username} in group {ctx.message.data_message.group.name}: {ctx.message.get_body()}"})
 
     if ctx.message.data_message.group and ctx.message.data_message.attachments:
+        if ctx.message.get_body():
+            urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username} in group {ctx.message.data_message.group.name}: {ctx.message.get_body()}"})
         for i in ctx.message.data_message.attachments:
             s3Key = i.id + '.' + parseContentType(i.content_type)
             s3Client.Bucket(s3Bucket).upload_file(
@@ -51,6 +53,8 @@ async def simpleRelay(ctx: ChatContext) -> None:
         urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username}: {ctx.message.get_body()}"})
 
     if not ctx.message.data_message.group and ctx.message.data_message.attachments:
+        if ctx.message.get_body():
+            urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username}: {ctx.message.get_body()}"})
         for i in ctx.message.data_message.attachments:
             s3Key = i.id + '.' + parseContentType(i.content_type)
             s3Client.Bucket(s3Bucket).upload_file(
