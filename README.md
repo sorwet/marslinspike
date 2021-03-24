@@ -13,7 +13,7 @@ Note that this software is currently under development, and I am not responsible
 * ~~relay text messages from a Signal group to an Urbit chat~~ **COMPLETE**
 * relay text messages from an Urbit chat to a Signal group
 * relay image messages from an Urbit chat to Signal
-* relay image messages from Signal to Urbit
+* ~~relay attachments from Signal to Urbit~~ **COMPLETE**
 * provide configuration for displaying of reactions, replies, read receipts, typing notifications from Signal to Urbit
 * provide commands for viewing group metadata
 
@@ -25,6 +25,7 @@ Note that this software is currently under development, and I am not responsible
 * an already-registered Signal number
 * a running instance of [signald](https://gitlab.com/signald/signald) (note: this project uses the Debian package)
 * an Urbit identity
+* an Urbit-compatible S3 bucket
 
 ## Setup
 
