@@ -8,6 +8,7 @@ s3Url = config['S3']['s3Url']
 s3AccessKey = config['S3']['s3AccessKey']
 s3SecretKey = config['S3']['s3SecretKey']
 s3Bucket = config['S3']['s3Bucket']
+s3BucketUrl = s3Url + '/' + s3Bucket
 signalUsername = config['SIGNAL']['signalUsername']
 signaldSocketPath = config['SIGNAL']['signaldSocketPath']
 urbitUrl = config['URBIT']['urbitUrl']
@@ -28,10 +29,17 @@ urbitClient = quinnat.Quinnat(urbitUrl, urbitId, urbitCode)
 def parseContentType(contentType):
     return contentType.split('/')[1]
 
+def uploadAttachment(fileToUpload):
+    s3Key = fileToUpload.id + '.' + parseContentType(fileToUpload.content_type)
+    s3Client.Bucket(s3Bucket).upload_file(
+        Filename = fileToUpload.stored_filename,
+        Key = s3Key
+    )
+    s3AttachmentUrl = s3BucketUrl + '/' + s3Key
+    return s3AttachmentUrl
+
 @signalClient.handler('')
 async def simpleRelay(ctx: ChatContext) -> None:
-
-    s3BucketUrl = s3Url + '/' + s3Bucket
 
     if ctx.message.data_message.group and not ctx.message.data_message.attachments:
         urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username} in group {ctx.message.data_message.group.name}: {ctx.message.get_body()}"})
@@ -40,12 +48,7 @@ async def simpleRelay(ctx: ChatContext) -> None:
         if ctx.message.get_body():
             urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username} in group {ctx.message.data_message.group.name}: {ctx.message.get_body()}"})
         for i in ctx.message.data_message.attachments:
-            s3Key = i.id + '.' + parseContentType(i.content_type)
-            s3Client.Bucket(s3Bucket).upload_file(
-                    Filename = i.stored_filename, 
-                    Key = s3Key
-            )
-            s3AttachmentUrl = s3BucketUrl + '/' + s3Key
+            s3AttachmentUrl = uploadAttachment(i)
             urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username} in group {ctx.message.data_message.group.name}:"})
             urbitClient.post_message(urbitHost, urbitBridgeChat, {"url": f"{s3AttachmentUrl}"})
 
@@ -56,12 +59,7 @@ async def simpleRelay(ctx: ChatContext) -> None:
         if ctx.message.get_body():
             urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username}: {ctx.message.get_body()}"})
         for i in ctx.message.data_message.attachments:
-            s3Key = i.id + '.' + parseContentType(i.content_type)
-            s3Client.Bucket(s3Bucket).upload_file(
-                    Filename = i.stored_filename, 
-                    Key = s3Key
-            )
-            s3AttachmentUrl = s3BucketUrl + '/' + s3Key
+            s3AttachmentUrl = uploadAttachment(i)
             urbitClient.post_message(urbitHost, urbitBridgeChat, {"text": f"{ctx.message.username}:"})
             urbitClient.post_message(urbitHost, urbitBridgeChat, {"url": f"{s3AttachmentUrl}"})
 
